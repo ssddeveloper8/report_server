@@ -1,0 +1,23 @@
+{
+  "reportName": "Weekly_Report",
+  "projectName": "Inventory_Management",
+  "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1NDU2NDk1NiwiZXhwIjoxNzU0NTkzNzU2fQ.pRN0F23nGUUoe5bOFSOSYzI5fdiZP3zBqtQ1cI0cQlRiBa3PipqRFZigO295_MekTYzt9kE8_GyV2_GuSJIZjw",
+  "projectID": "178",
+  "email": {
+    "to": ["ssddeveloper8@gmail.com"],
+    "cc": [],
+    "bcc": []
+  },
+  "isAttachFile": true,
+  "emailSubject": "Inventory Weekly Report",
+  "emailBody": "Hi Team",
+  "type": "doc",
+  "pages": [
+    {
+      "url": "http://localhost:3000",
+      "pageName": "Dashboard Overview",
+      "tabSelectors": [],
+      "subTabSelectors": []
+    }
+  ]
+}

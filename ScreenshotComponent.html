@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screenshot with Token</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    textarea, input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin-top: 40px;
+    }
+    .section {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+  </style>
+  </head>
+  <body>
+
+    <h1>📸 Unified Screenshot Utility</h1>
+
+    <div id="pagesContainer"></div>
+
+    <button onclick="addPageInput()">➕ Add Page</button>
+    <button onclick="sendAllScreenshots()">📤 Send All Screenshots via
+      Email</button>
+
+    <script>
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1NDI5NzI2MiwiZXhwIjoxNzU0MzI2MDYyfQ.QLpqEl_rOOXrRuLILla5nGGEoy6KYZxveykfSSjsLNESIHHngsYP_gPuK9A-W2zabVI34a3H6Jncs7a7wO6oBw";
+    const projectID = 178;
+    const email = "ssddeveloper8@gmail.com";
+
+    function addPageInput() {
+      const container = document.getElementById("pagesContainer");
+
+      const index = container.children.length + 1;
+      const section = document.createElement("div");
+      section.className = "section";
+
+      section.innerHTML = `
+        <h2>Page ${index}</h2>
+        <input type="text" class="pageUrl" placeholder="Enter page URL (required)" />
+        <input type="text" class="nameOfPage" placeholder="pageName" />
+        <textarea rows="3" class="tabSelectors" placeholder="Optional: Enter tab selectors, one per line (e.g. #tab1, .tab-class)"></textarea>
+      `;
+
+      container.appendChild(section);
+    }
+
+    async function sendAllScreenshots() {
+      const sections = document.querySelectorAll(".section");
+
+      const pages = [];
+
+      for (const sec of sections) {
+        const url = sec.querySelector(".pageUrl").value.trim();
+        const pageName = sec.querySelector(".nameOfPage").value.trim();
+        const tabText = sec.querySelector(".tabSelectors").value.trim();
+        const tabSelectors = tabText.length > 0
+          ? tabText.split("\n").map(s => s.trim()).filter(Boolean)
+          : [];
+
+        if (!url) {
+          alert("Each page must have a valid URL.");
+          return;
+        }
+
+        pages.push({ url, pageName, tabSelectors });
+      }
+  
+      
+
+      if (pages.length === 0) {
+        alert("Please add at least one page.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:5000/screenshot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pages, token, projectID, email }),
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Screenshot failed");
+
+        alert("All screenshots sent successfully via email.");
+      } catch (err) {
+        console.error(err);
+        alert("Failed to send screenshots.");
+      }
+    }
+
+    addPageInput();
+  </script>
+  </body>
+</html>
